@@ -9,20 +9,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import controlador.CrtlABMCPersona;
 import entidades.Persona;
+import util.AppDataException;
+import util.Emailer;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Level;
 /**
  * Servlet implementation class Start
  */
-@WebServlet("/Start")
+@WebServlet({ "/Start", "/start" })
 public class Start extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	//private Logger logger;
     /**
-     * @see HttpServlet#HttpServlet()
+     * Default constructor. 
      */
     public Start() {
-        super();
-        // TODO Auto-generated constructor stub
+    	//logger = LogManager.getLogger(getClass());
+		
     }
 
 	/**
@@ -38,6 +43,7 @@ public class Start extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
+			
 			String user=request.getParameter("user");
 			String pass=request.getParameter("pass");
 			
@@ -45,13 +51,26 @@ public class Start extends HttpServlet {
 			per.setUsuario(user);
 			per.setContraseña(pass);
 			
-			CrtlABMCPersona ctrl=new CrtlABMCPersona();
+			CrtlABMCPersona ctrl= new CrtlABMCPersona();
 			
 			Persona pers=ctrl.getByUsYCon(per);
 			
+		/*	try {
+				request.setAttribute("listaPersonas", ctrl.getAll());
+			} catch (AppDataException ade) {
+				request.setAttribute("Error", ade.getMessage());
+			} catch (Exception e) {
+				response.setStatus(502);
+			}
+			*/
 			request.getSession().setAttribute("user", pers);
 			
+		//	logger.log(Level.INFO,"log in "+pers.getDni());
+			//Emailer.getInstance().send("agustinrc96@gmail.com","Lista Personas",ctrl.personaListText());
+
 			request.getRequestDispatcher("WEB-INF/welcome.jsp").forward(request, response);
+			//response.getWriter().append(user).append(" ").append(pass);
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -63,4 +63,14 @@ public class CrtlABMCPersona {
 	{
 		return dataPer.getByUsYCon(p);
 	}
+	
+	public String personaListText() throws Exception {
+		String texto="Dni\tApellido\tNombre\tCategoria\n";
+		ArrayList<Persona> personas =this.getAll();
+		for (Persona p : personas){
+			texto= texto + p.getDni() +"\t"+p.getApellido()+"\t"+p.getNombre()+"\t"+
+					p.getCategoria().getNombre()+"\n";
+		}
+		return texto;
+	}
 }
