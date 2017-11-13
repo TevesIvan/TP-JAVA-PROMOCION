@@ -41,18 +41,21 @@ public class ABMCPersona extends HttpServlet {
 	//	if("Buscar".equals(request.getParameter("accion")))
 	//	{
 			Persona p=new Persona();
+			System.out.println(request.getParameter("dni"));
 			p.setDni(request.getParameter("dni"));
 			CrtlABMCPersona ctrl= new CrtlABMCPersona();
+		
 			try {
-				ctrl.getByDni(p);
+				p=ctrl.getByDni(p);
+				System.out.println(p.getNombre());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			request.getSession().setAttribute("per",p);
+			
+			
 			request.getRequestDispatcher("WEB-INF/ABMCPersona.jsp").forward(request, response);
-			request.setAttribute("nombre", p.getNombre());
-			request.setAttribute("apellido", p.getApellido());
-
 	//	}
 	}
 
