@@ -54,7 +54,13 @@ public class Start extends HttpServlet {
 			CrtlABMCPersona ctrl= new CrtlABMCPersona();
 			
 			Persona pers=ctrl.getByUsYCon(per);
-			
+			if(pers==null)
+			{
+				request.setAttribute("error", "Nombre de usuario y/o contraseña no validos");
+				request.getRequestDispatcher("WEB-INF/Error.jsp").forward(request, response);
+			}
+			else
+			{
 		/*	try {
 				request.setAttribute("listaPersonas", ctrl.getAll());
 			} catch (AppDataException ade) {
@@ -70,10 +76,12 @@ public class Start extends HttpServlet {
 
 			request.getRequestDispatcher("WEB-INF/welcome.jsp").forward(request, response);
 			//response.getWriter().append(user).append(" ").append(pass);
-			
+			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			//request.setAttribute("error", "Error al conectar con el servidor");
+			//request.getRequestDispatcher("WEB-INF/Error.jsp").forward(request, response);
+			response.setStatus(502);
 		}
 		//doGet(request, response);
 	}

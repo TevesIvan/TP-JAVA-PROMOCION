@@ -176,7 +176,6 @@ public class DataPersona {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw e;
 		} finally{
 			try {

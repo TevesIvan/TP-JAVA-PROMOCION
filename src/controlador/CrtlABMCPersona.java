@@ -17,30 +17,23 @@ public class CrtlABMCPersona {
 	public CrtlABMCPersona(){
 		dataPer = new DataPersona();
 		dataCat=new DataCategoria();
-	//	pers= new ArrayList<Persona>();
 	}
 	
 	public void add(Persona p) throws Exception{
-		//this.pers.add(p);
 		dataPer.add(p);
 	}
 	
 	public void delete(Persona p) throws Exception{
-		//this.pers.remove(this.getByDni(p));
-		//this.pers.remove(p);
 		dataPer.delete(p);
 	}
 	
 	public void update(Persona p) throws Exception{
-		//this.delete(p);
-		//this.add(p);
 		dataPer.delete(p);
 		dataPer.add(p);
 	}
 	
 	public Persona getByDni(Persona p) throws Exception{
 		return this.dataPer.getByDni(p);
-		//return this.getByDni(p.getDni());
 	}
 	
 	public Persona getByDni(String dni) throws Exception{
@@ -50,7 +43,6 @@ public class CrtlABMCPersona {
 	}
 	
 	public ArrayList<Persona> getAll() throws Exception{
-		//return this.pers;
 		return dataPer.getAll();
 	}
 	
