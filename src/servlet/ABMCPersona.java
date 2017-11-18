@@ -1,6 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,17 +46,17 @@ public class ABMCPersona extends HttpServlet {
 			System.out.println(request.getParameter("dni"));
 			p.setDni(request.getParameter("dni"));
 			CrtlABMCPersona ctrl= new CrtlABMCPersona();
-		
+			try {
+				request.setAttribute("listaPer", ctrl.getAll());
+			} catch (Exception e1) {
+				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");			}
 			try {
 				p=ctrl.getByDni(p);
 				System.out.println(p.getNombre());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");
 			}
 			request.getSession().setAttribute("per",p);
-			
-			
 			request.getRequestDispatcher("WEB-INF/ABMCPersona.jsp").forward(request, response);
 	//	}
 	}

@@ -7,10 +7,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controlador.CrtlABMCPersona;
+
 /**
  * Servlet implementation class Menu
  */
-@WebServlet("/Menu")
+@WebServlet({"/menu/*", "/Menu/*", "/MENU/*"})
 public class Menu extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -34,7 +36,54 @@ public class Menu extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		switch (request.getPathInfo()) {
+		case "/personas":
+			this.personas(request,response);
+			break;
+		
+		
+		case "/elementos":
+			this.elementos(request,response);
+			break;
+		
+			
+		case "/tipos":
+			this.tipos(request,response);
+			break;
+			
+		case "/reservas":
+			this.reservas(request,response);
+			break;
+			
+		default:
+			this.error(request,response);
+			break;
+		}
+	}
+	private void personas(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+		CrtlABMCPersona ctrl= new CrtlABMCPersona();
+		try {
+			request.setAttribute("listaPer", ctrl.getAll());
+		} catch (Exception e1) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");			}
 		request.getRequestDispatcher("WEB-INF/ABMCPersona.jsp").forward(request, response);
 	}
-
+	
+	private void elementos(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.getWriter().append("Elementos, requested action: ").append(request.getPathInfo()).append(" through post");
+	}
+	
+	private void tipos(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.getWriter().append("Tipos, requested action: ").append(request.getPathInfo()).append(" through post");
+	}
+	
+	private void reservas(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.getWriter().append("Reservas, requested action: ").append(request.getPathInfo()).append(" through post");
+	}
+	
+	private void error(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setStatus(404);
+		response.sendError(HttpServletResponse.SC_NOT_FOUND, "La pagina solicitada no fue encontrada");
+	}
 }

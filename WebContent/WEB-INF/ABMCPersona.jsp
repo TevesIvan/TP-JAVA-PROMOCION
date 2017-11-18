@@ -21,8 +21,7 @@
 %>
 <table>
 		<%
-			CrtlABMCPersona ctrl=new CrtlABMCPersona();
-			ArrayList<Persona>listaPers= ctrl.getAll();			
+			ArrayList<Persona>listaPers= (ArrayList<Persona>)request.getAttribute("listaPer");
 			for(Persona p : listaPers){
 		%>
 		<tr>

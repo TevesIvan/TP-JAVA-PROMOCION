@@ -82,6 +82,7 @@ public class Start extends HttpServlet {
 			//request.setAttribute("error", "Error al conectar con el servidor");
 			//request.getRequestDispatcher("WEB-INF/Error.jsp").forward(request, response);
 			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");
 		}
 		//doGet(request, response);
 	}
