@@ -57,7 +57,8 @@ public class ABMCPersona extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");
 			}
 			request.getSession().setAttribute("per",p);
-			request.getRequestDispatcher("WEB-INF/ABMCPersona.jsp").forward(request, response);
+			//request.getRequestDispatcher("WEB-INF/ABMCPersona.jsp").forward(request, response);
+			response.sendRedirect("ABMCPersona.java");
 	//	}
 	}
 
