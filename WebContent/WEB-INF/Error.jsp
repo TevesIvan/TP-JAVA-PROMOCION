@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Error</title>
 </head>
 <body>
-	<form action="login.html">
+	<form action=<%=(String)request.getAttribute("url")%>>
 		<label class="sr-only"><%=(String)request.getAttribute("error")%></label>
 		<button class="btn btn-lg btn-primary btn-block" type="submit">Aceptar</button>
 	</form>

@@ -15,7 +15,7 @@ import entidades.Persona;
 /**
  * Servlet implementation class ABMCPersona
  */
-@WebServlet("/ABMCPersona")
+@WebServlet({"/personas/*", "/Personas/*", "/PERSONAS/*"})
 public class ABMCPersona extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -39,27 +39,68 @@ public class ABMCPersona extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	//	if("Buscar".equals(request.getParameter("accion")))
+		switch (request.getPathInfo()){
+		case "/buscar":
+			this.buscar(request, response);
+			break;
+		
+		case "/insertar":
+			this.insertar(request, response);
+			break;
+			
+		case "/eliminar":
+			this.eliminar(request, response);
+			break;
+			
+		case "/modificar":
+			this.modificar(request, response);
+			break;
+			
+		default:
+			this.error(request, response);
+			break;
+		}
+	}
+	
+	private void buscar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		//response.getWriter().append("Buscar, requested action: ").append(request.getPathInfo()).append(" through post");
+		Persona p=new Persona();
+		//System.out.println(request.getParameter("dni"));
+		p.setDni(request.getParameter("dni"));
+		CrtlABMCPersona ctrl= new CrtlABMCPersona();
+		try {
+			p=ctrl.getByDni(p);
+			response.getWriter().append("Persona encontrada: ").append(p.getNombre());
+		} catch (Exception e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Persona no encontrada");
+		}
+		//request.getRequestDispatcher("WEB-INF/ABMCPersona.jsp").forward(request, response);
+/*		if(p==null)
+		{
+			request.setAttribute("url", "WEB-INF/ABMCPersona.jsp");
+			request.setAttribute("error", "Persona no encontrada");
+			request.getRequestDispatcher("WEB-INF/Error.jsp").forward(request, response);
+		}
+		else*/
 	//	{
-			Persona p=new Persona();
-			System.out.println(request.getParameter("dni"));
-			p.setDni(request.getParameter("dni"));
-			CrtlABMCPersona ctrl= new CrtlABMCPersona();
-			try {
-				request.setAttribute("listaPer", ctrl.getAll());
-			} catch (Exception e1) {
-				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");			}
-			try {
-				p=ctrl.getByDni(p);
-				System.out.println(p.getNombre());
-			} catch (Exception e) {
-				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");
-			}
-			request.getSession().setAttribute("per",p);
-			//request.getRequestDispatcher("WEB-INF/ABMCPersona.jsp").forward(request, response);
-			response.sendRedirect("ABMCPersona.java");
 	//	}
+
 	}
 
+	private void insertar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		response.getWriter().append("Insertar, requested action: ").append(request.getPathInfo()).append(" through post");
+	}
+	
+	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		response.getWriter().append("Eliminar, requested action: ").append(request.getPathInfo()).append(" through post");
+	}
+	
+	private void modificar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		response.getWriter().append("Modificar, requested action: ").append(request.getPathInfo()).append(" through post");
+	}
+	
+	private void error(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		response.setStatus(404);
+		response.sendError(HttpServletResponse.SC_NOT_FOUND, "La pagina solicitada no fue encontrada");
+	}
 }

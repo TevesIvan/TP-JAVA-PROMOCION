@@ -1,13 +1,25 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="entidades.Persona"%>
-<%@page import="controlador.*"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Personas</title>
+<script type="text/javascript">
+		function RemoveLastDirectoryPartOf(the_url){
+		    var the_arr = the_url.split('/');
+		    the_arr.pop();
+		    return( the_arr.join('/') );
+		}
+
+    	function submitForm(met) {
+    		//RemoveLastDirectoryPartOf(window.location.href);
+    		window.history.pushState({}, document.title, "/" + "TP_JAVA_WEB/personas" );
+    		document.myForm.action=met;
+        }
+    </script>
 </head>
 <body>
 <h1>Bienvenido <%=((Persona)session.getAttribute("user")).getNombre() %></h1>
@@ -34,16 +46,16 @@
 		%>
 		</table>		
 	
-<form class="form-ABMCPersona" name="ABMCPersona" action="ABMCPersona" method="post">
+<form class="form-ABMCPersona" id="myForm" name="myForm" action="" method="post">
         <h2 class="form-ABMCPersona-heading">ABMC de Personas</h2>
         <label for="inputUser" class="sr-only">User</label>
-        <input name="user" id="inputUser" class="form-control" placeholder="User" required="" autofocus="" type=""><br>
+        <input name="user" id="inputUser" class="form-control" placeholder="User" autofocus="" type=""><br>
         <label for="inputPass" class="sr-only">Password</label>
-        <input name="pass" id="inputPass" class="form-control" placeholder="Password" required="" type="Password"><br>
+        <input name="pass" id="inputPass" class="form-control" placeholder="Password" type="Password"><br>
          <label for="lblDni" class="sr-only">DNI</label>
         <input name="dni" id="txtDni" class="form-control" placeholder="DNI" required="" autofocus="" type=""><br>
         <label for="lblApellido" class="sr-only">Apellido</label>
-        <input name="apellido" id="txtApellido" class="form-control" placeholder="Apellido" required="" autofocus="" type="" 
+        <input name="apellido" id="txtApellido" class="form-control" placeholder="Apellido" autofocus="" type="" 
 <%
 	if((Persona)session.getAttribute("per") != null)
 	{
@@ -54,8 +66,11 @@
 %>
 <br>
         <label for="lblNombre" class="sr-only">Nombre</label>
-        <input name="nombre" id="txtNombre" class="form-control" placeholder="Nombre" required="" autofocus="" type=""><br>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Buscar</button>
+        <input name="nombre" id="txtNombre" class="form-control" placeholder="Nombre" autofocus="" type=""><br>
+        <button class="btn btn-lg " onclick="javascript: submitForm('personas/buscar')">Buscar</button>
+        <button class="btn btn-lg " onclick="javascript: submitForm('personas/insertar')">Insertar</button>
+        <button class="btn btn-lg " onclick="javascript: submitForm('personas/eliminar')">Eliminar</button>
+        <button class="btn btn-lg " onclick="javascript: submitForm('personas/modificar')">Modificar</button>
       </form>	
 </body>
 </html>
