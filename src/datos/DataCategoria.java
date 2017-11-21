@@ -44,14 +44,14 @@ public ArrayList<Categoria> getAll() throws Exception{
 		return cats;
 		
 	}
-public Categoria getByNombre(String nom) throws Exception{
+public Categoria getByNombre(Categoria cat) throws Exception{
 	Categoria c=null;
 	ResultSet rs=null;
 	PreparedStatement stmt =null;
 	try {
 		stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
 				"select idCategoria, nombre from categoria where nombre=?");
-		stmt.setString(1, nom);
+		stmt.setString(1, cat.getNombreCat());
 		rs = stmt.executeQuery();
 		if(rs!=null && rs.next()){
 			c=new Categoria();

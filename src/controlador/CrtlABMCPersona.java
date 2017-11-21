@@ -65,8 +65,13 @@ public class CrtlABMCPersona {
 		ArrayList<Persona> personas =this.getAll();
 		for (Persona p : personas){
 			texto= texto + p.getDni() +"\t"+p.getApellido()+"\t"+p.getNombre()+"\t"+
-					p.getCategoria().getNombre()+"\n";
+					p.getCategoria().getNombreCat()+"\n";
 		}
 		return texto;
+	}
+	
+	public Categoria getByNombre(Categoria c) throws Exception
+	{
+		return dataCat.getByNombre(c);
 	}
 }

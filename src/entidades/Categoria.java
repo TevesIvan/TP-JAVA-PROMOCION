@@ -14,7 +14,7 @@ public class Categoria implements Serializable {
 	@Override
 	public String toString()
 	{
-		return this.getNombre();
+		return this.getNombreCat();
 	}
 
 	public int getIdCategoria() {
@@ -25,8 +25,8 @@ public class Categoria implements Serializable {
 		this.idCategoria = idCategoria;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getNombreCat() {
+		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {

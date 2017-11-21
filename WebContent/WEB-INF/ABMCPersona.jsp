@@ -1,5 +1,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="entidades.Persona"%>
+<%@page import="entidades.Categoria"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -16,15 +17,12 @@
 </head>
 <body>
 <h1>Bienvenido <%=((Persona)session.getAttribute("user")).getNombre() %></h1>
-<%
-	if((Persona)session.getAttribute("per") != null)
-	{
-%>
-<h2>Persona encontrada <%=((Persona)session.getAttribute("per")).getApellido()%></h2>
-<%
-	}
-%>
 <table>
+		<tr>
+   			<th>DNI</th>
+  		    <th>Apellido</th>
+  		    <th>Nombre</th>
+ 	    </tr>
 		<%
 			ArrayList<Persona>listaPers= (ArrayList<Persona>)request.getAttribute("listaPer");
 			for(Persona p : listaPers){
@@ -48,18 +46,20 @@
          <label for="lblDni" class="sr-only">DNI</label>
         <input name="dni" id="txtDni" class="form-control" placeholder="DNI" required="" autofocus="" type=""><br>
         <label for="lblApellido" class="sr-only">Apellido</label>
-        <input name="apellido" id="txtApellido" class="form-control" placeholder="Apellido" autofocus="" type="" 
-<%
-	if((Persona)session.getAttribute("per") != null)
-	{
-%>
-        value="<%=((Persona)session.getAttribute("per")).getApellido()%>"><br>
-<%
-	}
-%>
-<br>
+        <input name="apellido" id="txtApellido" class="form-control" placeholder="Apellido" autofocus="" type=""><br>
         <label for="lblNombre" class="sr-only">Nombre</label>
         <input name="nombre" id="txtNombre" class="form-control" placeholder="Nombre" autofocus="" type=""><br>
+        <input type="checkbox" name="habilitado" value="si">Habilitado<br>
+        <select name="categoria">
+        	<%
+        		ArrayList<Categoria>listaCat=(ArrayList<Categoria>)request.getAttribute("listaCat");
+        		for(Categoria c : listaCat){
+        	%>
+        	<option value="<%=(Categoria)c%>"><%=c%></option>
+        	<%
+        		}
+        	%>
+        </select>
         <button class="btn btn-lg " onclick="javascript: submitForm('personas/buscar')">Buscar</button>
         <button class="btn btn-lg " onclick="javascript: submitForm('personas/insertar')">Insertar</button>
         <button class="btn btn-lg " onclick="javascript: submitForm('personas/eliminar')">Eliminar</button>

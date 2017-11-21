@@ -64,6 +64,7 @@ public class Menu extends HttpServlet {
 		CrtlABMCPersona ctrl= new CrtlABMCPersona();
 		try {
 			request.setAttribute("listaPer", ctrl.getAll());
+			request.setAttribute("listaCat", ctrl.getCategorias());
 		} catch (Exception e1) {
 			response.setStatus(502);
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");			

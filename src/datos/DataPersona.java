@@ -96,7 +96,7 @@ public class DataPersona {
 		PreparedStatement stmt =null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"select p.nombre, apellido, dni, habilitado, usuario, contraseña, id, c.idCategoria from persona p inner join categoria c on p.idCategoria=c.idCategoria where dni=?");
+					"select p.nombre, apellido, dni, habilitado, usuario, contraseña, id, c.idCategoria, c.nombre from persona p inner join categoria c on p.idCategoria=c.idCategoria where dni=?");
 			stmt.setString(1, per.getDni());
 			rs = stmt.executeQuery();
 			if(rs!=null && rs.next()){
@@ -110,7 +110,7 @@ public class DataPersona {
 				p.setId(rs.getInt("id"));
 				p.setCategoria(new Categoria());
 				p.getCategoria().setIdCategoria(rs.getInt("idCategoria"));
-				p.getCategoria().setNombre(rs.getString("nombre"));
+				p.getCategoria().setNombre(rs.getString("c.nombre"));
 			}
 			
 		} catch (Exception e) {

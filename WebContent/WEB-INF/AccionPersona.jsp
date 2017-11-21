@@ -18,11 +18,39 @@
 	if(request.getAttribute("accion").equals("buscar"))
 	{
 %>
-<h2>Persona encontrada <%=((Persona)request.getAttribute("persona")).getNombre()%></h2>
+<h2>Persona encontrada</h2><br>
+<form class="form-Buscar" action="">
+	<label>ID: <%=((Persona)request.getAttribute("persona")).getId()%></label><br>
+	<label>Nombre: <%=((Persona)request.getAttribute("persona")).getNombre()%></label><br>
+	<label>Apellido: <%=((Persona)request.getAttribute("persona")).getApellido()%></label><br>
+	<label>DNI: <%=((Persona)request.getAttribute("persona")).getDni()%></label><br>
+	<label>Usuario: <%=((Persona)request.getAttribute("persona")).getUsuario()%></label><br>
+	<label>Contraseña: <%=((Persona)request.getAttribute("persona")).getContraseña()%></label><br>
+	<label>Categoria: <%=((Persona)request.getAttribute("persona")).getCategoria().getNombreCat()%></label><br>
+	<label>Habilitado: <%=((Persona)request.getAttribute("persona")).isHabilitado()%></label><br>
+</form>
+<%
+	}
+	else if(request.getAttribute("accion").equals("insertar"))
+	{
+%>
+	Persona Agregada con éxito.
+<%
+	}
+	else if(request.getAttribute("accion").equals("eliminar"))
+	{
+%>
+	Persona Eliminada con éxito.
+<%
+	}
+	else
+	{
+%>
+	Persona Modificada con éxito.
 <%
 	}
 %>
-	<form class="form-Error" id="myForm" name="myForm" action="start" method="post">
+	<form class="form-Accion" id="myForm" name="myForm" action="start" method="post">
 		<button class="btn btn-lg" onclick="javascript: submitForm()">Aceptar</button>
 	</form>
 </body>

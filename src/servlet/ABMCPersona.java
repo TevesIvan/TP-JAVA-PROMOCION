@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controlador.CrtlABMCPersona;
+import entidades.Categoria;
 import entidades.Persona;
 
 /**
@@ -69,12 +70,11 @@ public class ABMCPersona extends HttpServlet {
 		p.setDni(request.getParameter("dni"));
 		CrtlABMCPersona ctrl= new CrtlABMCPersona();
 		Persona pers=new Persona();
-	//	try {
 			try {
 				pers=ctrl.getByDni(p);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				response.setStatus(502);
+				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
 			}
 			if(pers==null)
 			{
@@ -89,23 +89,113 @@ public class ABMCPersona extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionPersona.jsp");
 				dispatcher.forward(request,response);
 			}
-	//	}
-	//	catch (Exception e) {
-	//		response.setStatus(502);
-	//		response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
-	//	}
 	}
 
 	private void insertar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		response.getWriter().append("Insertar, requested action: ").append(request.getPathInfo()).append(" through post");
+		if(request.getParameter("dni").equals("") || request.getParameter("apellido").equals("") || request.getParameter("nombre").equals("") || request.getParameter("pass").equals("") || request.getParameter("user").equals(""))
+		{
+			request.setAttribute("url", "start");
+			request.setAttribute("error", "No debe haber campos vacíos.");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
+			dispatcher.forward(request,response);
+		}
+		else
+		{
+			Persona p=new Persona();
+			Categoria c=new Categoria();
+			CrtlABMCPersona ctrl= new CrtlABMCPersona();
+			request.setAttribute("accion", "insertar");
+			c.setNombre(request.getParameter("categoria"));
+			p.setDni(request.getParameter("dni"));
+			p.setApellido(request.getParameter("apellido"));
+			p.setNombre(request.getParameter("nombre"));
+			try {
+				p.setCategoria(ctrl.getByNombre(c));
+			} catch (Exception e) {
+				response.setStatus(502);
+				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+			}
+			p.setContraseña(request.getParameter("pass"));
+			if(request.getParameter("habilitado").equals("si"))
+			{
+				p.setHabilitado(true);
+			}
+			else
+			{
+				p.setHabilitado(false);
+			}
+			p.setUsuario(request.getParameter("user"));
+			try {
+				ctrl.add(p);
+			} catch (Exception e) {
+				response.setStatus(502);
+				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+			}
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionPersona.jsp");
+			dispatcher.forward(request,response);
+		}
 	}
 	
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		response.getWriter().append("Eliminar, requested action: ").append(request.getPathInfo()).append(" through post");
+		//response.getWriter().append("Eliminar, requested action: ").append(request.getPathInfo()).append(" through post");
+		Persona p=new Persona();
+		CrtlABMCPersona ctrl= new CrtlABMCPersona();
+		request.setAttribute("accion", "eliminar");
+		p.setDni(request.getParameter("dni"));
+		try {
+			ctrl.delete(p);
+		} catch (Exception e) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+		}
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionPersona.jsp");
+		dispatcher.forward(request,response);
 	}
 	
 	private void modificar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		response.getWriter().append("Modificar, requested action: ").append(request.getPathInfo()).append(" through post");
+		//response.getWriter().append("Modificar, requested action: ").append(request.getPathInfo()).append(" through post");
+		if(request.getParameter("dni").equals("") || request.getParameter("apellido").equals("") || request.getParameter("nombre").equals("") || request.getParameter("pass").equals("") || request.getParameter("user").equals(""))
+		{
+			request.setAttribute("url", "start");
+			request.setAttribute("error", "No debe haber campos vacíos.");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
+			dispatcher.forward(request,response);
+		}
+		else
+		{
+			Persona p=new Persona();
+			Categoria c=new Categoria();
+			CrtlABMCPersona ctrl= new CrtlABMCPersona();
+			request.setAttribute("accion", "modificar");
+			c.setNombre(request.getParameter("categoria"));
+			p.setDni(request.getParameter("dni"));
+			p.setApellido(request.getParameter("apellido"));
+			p.setNombre(request.getParameter("nombre"));
+			try {
+				p.setCategoria(ctrl.getByNombre(c));
+			} catch (Exception e) {
+				response.setStatus(502);
+				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+			}
+			p.setContraseña(request.getParameter("pass"));
+			if(request.getParameter("habilitado").equals("si"))
+			{
+				p.setHabilitado(true);
+			}
+			else
+			{
+				p.setHabilitado(false);
+			}
+			p.setUsuario(request.getParameter("user"));
+			try {
+				ctrl.update(p);
+			} catch (Exception e) {
+				response.setStatus(502);
+				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+			}
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionPersona.jsp");
+			dispatcher.forward(request,response);
+		}
 	}
 	
 	private void error(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
