@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -63,28 +64,36 @@ public class ABMCPersona extends HttpServlet {
 	}
 	
 	private void buscar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		//response.getWriter().append("Buscar, requested action: ").append(request.getPathInfo()).append(" through post");
 		Persona p=new Persona();
-		//System.out.println(request.getParameter("dni"));
+		request.setAttribute("accion", "buscar");
 		p.setDni(request.getParameter("dni"));
 		CrtlABMCPersona ctrl= new CrtlABMCPersona();
-		try {
-			p=ctrl.getByDni(p);
-			response.getWriter().append("Persona encontrada: ").append(p.getNombre());
-		} catch (Exception e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Persona no encontrada");
-		}
-		//request.getRequestDispatcher("WEB-INF/ABMCPersona.jsp").forward(request, response);
-/*		if(p==null)
-		{
-			request.setAttribute("url", "WEB-INF/ABMCPersona.jsp");
-			request.setAttribute("error", "Persona no encontrada");
-			request.getRequestDispatcher("WEB-INF/Error.jsp").forward(request, response);
-		}
-		else*/
-	//	{
+		Persona pers=new Persona();
+	//	try {
+			try {
+				pers=ctrl.getByDni(p);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(pers==null)
+			{
+				request.setAttribute("url", "start");
+				request.setAttribute("error", "Persona no encontrada");
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
+				dispatcher.forward(request,response);
+			}
+			else
+			{
+				request.setAttribute("persona", pers);
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionPersona.jsp");
+				dispatcher.forward(request,response);
+			}
 	//	}
-
+	//	catch (Exception e) {
+	//		response.setStatus(502);
+	//		response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+	//	}
 	}
 
 	private void insertar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

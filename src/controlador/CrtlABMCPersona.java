@@ -53,7 +53,11 @@ public class CrtlABMCPersona {
 	
 	public Persona getByUsYCon(Persona p) throws Exception
 	{
-		return dataPer.getByUsYCon(p);
+		try {
+			return dataPer.getByUsYCon(p);
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 	
 	public String personaListText() throws Exception {

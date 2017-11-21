@@ -5,12 +5,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Error</title>
+<script type="text/javascript">
+    	function submitForm() {
+    		window.history.pushState({}, document.title, "/" + "TP_JAVA_WEB" + "/" );
+        }
+    </script>
 </head>
 <body>
-	<form action=<%=(String)request.getAttribute("url")%>>
+	<form class="form-Error" id="myForm" name="myForm" action="<%=(String)request.getAttribute("url")%>" method="post">
 		<label class="sr-only"><%=(String)request.getAttribute("error")%></label>
-		<button class="btn btn-lg btn-primary btn-block" type="submit">Aceptar</button>
-	</form>
-	 
+		<button class="btn btn-lg" onclick="javascript: submitForm()">Aceptar</button>
+	</form> 
 </body>
 </html>

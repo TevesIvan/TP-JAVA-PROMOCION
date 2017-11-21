@@ -8,15 +8,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Personas</title>
 <script type="text/javascript">
-		function RemoveLastDirectoryPartOf(the_url){
-		    var the_arr = the_url.split('/');
-		    the_arr.pop();
-		    return( the_arr.join('/') );
-		}
-
     	function submitForm(met) {
-    		//RemoveLastDirectoryPartOf(window.location.href);
-    		window.history.pushState({}, document.title, "/" + "TP_JAVA_WEB/personas" );
+    		window.history.pushState({}, document.title, "/" + "TP_JAVA_WEB" + "/" );
     		document.myForm.action=met;
         }
     </script>
