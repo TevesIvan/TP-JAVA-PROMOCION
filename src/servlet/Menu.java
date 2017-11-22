@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controlador.CrtlABMCPersona;
+import controlador.CtrlReserva;
+import entidades.Persona;
 
 /**
  * Servlet implementation class Menu
@@ -88,7 +90,21 @@ public class Menu extends HttpServlet {
 	}
 	
 	private void reservas(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.getWriter().append("Reservas, requested action: ").append(request.getPathInfo()).append(" through post");
+		CtrlReserva ctrl=new CtrlReserva();
+		try {
+			request.setAttribute("listaRes", ctrl.getAllUsuario((Persona) request.getSession().getAttribute("user")));
+			request.setAttribute("listaTip", ctrl.getTiposElementos());
+		} catch (Exception e) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");
+		}
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/Reserva.jsp");
+		try {
+			dispatcher.forward(request,response);
+		} catch (ServletException e) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");
+		}
 	}
 	
 	private void error(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
