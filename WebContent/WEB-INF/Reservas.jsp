@@ -21,6 +21,7 @@
 <h2>Listado de Reservas</h2>
 <table>
 		<tr>
+			<th>ID</th>
    			<th>Elemento</th>
   		    <th>Detalle</th>
   		    <th>Fecha Hora Desde</th>
@@ -31,6 +32,7 @@
 			for(Reserva r : listaRes){
 		%>
 		<tr>
+			<td><%=r.getId()%></td>
 			<td><%=r.getElemento().getNombre()%></td>
 			<td><%=r.getDetalle()%></td>
 			<td><%=r.getFechaHoraDesde()%></td>
@@ -41,13 +43,14 @@
 		%>
 		</table>
 <form class="form-Reserva" id="myForm" name="myForm" action="" method="post">
-        <h2 class="form-ABMCPersona-heading">Ingresar datos para Reserva</h2>
+        <h2 class="form-ABMCPersona-heading">Ingresar datos para Reserva Nueva</h2>
         <label for="inputFechaHoraDesde" class="sr-only">Fecha Hora Desde</label>
-        <input name="fechaHoraDesde" id="inputFechaHoraDesde" class="form-control" placeholder="FechaHoraDesde" autofocus="" type=""><br>
+        <input name="fechaHoraDesde" id="inputFechaHoraDesde" class="form-control" placeholder="DD/MM/AAAA HH:mm" autofocus="" type=""><br>
         <label for="inputFechaHoraHasta" class="sr-only">Fecha Hora Hasta</label>
-        <input name="fechaHoraHasta" id="inputFechaHoraHasta" class="form-control" placeholder="FechaHoraHasta" autofocus="" type=""><br>
+        <input name="fechaHoraHasta" id="inputFechaHoraHasta" class="form-control" placeholder="DD/MM/AAAA HH:mm" autofocus="" type=""><br>
         <label for="inputDetalle" class="sr-only">Detalle</label>
-        <input name="detalle" id="inputDetalle" class="form-control" placeholder="Detalle" required="" autofocus="" type=""><br>
+        <input name="detalle" id="inputDetalle" class="form-control" placeholder="Detalle" autofocus="" type=""><br>
+        <label for="tipoElemento" class="sr-only">Tipo de Elemento</label>
         <select name="tipoElemento">
         	<%
         		ArrayList<TipoElemento>listaTip=(ArrayList<TipoElemento>)request.getAttribute("listaTip");
@@ -57,11 +60,13 @@
         	<%
         		}
         	%>
-        </select>
-        <button class="btn btn-lg " onclick="javascript: submitForm('personas/buscar')">Buscar</button>
-        <button class="btn btn-lg " onclick="javascript: submitForm('personas/insertar')">Insertar</button>
-        <button class="btn btn-lg " onclick="javascript: submitForm('personas/eliminar')">Eliminar</button>
-        <button class="btn btn-lg " onclick="javascript: submitForm('personas/modificar')">Modificar</button>
+        </select><br>
+        <button class="btn btn-lg " onclick="javascript: submitForm('reservas/buscar')">Buscar</button><br><br>
+        
+        <h2 class="form-ABMCPersona-heading">Cancelar Reserva</h2>
+        <label for="inputId" class="sr-only">ID</label>
+        <input name="id" id="inputId" class="form-control" placeholder="Id" autofocus="" type=""><br>
+        <button class="btn btn-lg " onclick="javascript: submitForm('reservas/cancelar')">Cancelar</button>
 </form>		
 </body>
 </html>

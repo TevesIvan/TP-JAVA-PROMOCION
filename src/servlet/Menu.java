@@ -98,7 +98,7 @@ public class Menu extends HttpServlet {
 			response.setStatus(502);
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");
 		}
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/Reserva.jsp");
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/Reservas.jsp");
 		try {
 			dispatcher.forward(request,response);
 		} catch (ServletException e) {

@@ -1,0 +1,149 @@
+package servlet;
+
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import controlador.CtrlABMCElemento;
+import controlador.CtrlReserva;
+import controlador.CtrlTipoElemento;
+import entidades.Elemento;
+import entidades.Persona;
+import entidades.Reserva;
+import entidades.TipoElemento;
+
+/**
+ * Servlet implementation class Reserva
+ */
+@WebServlet({"/reservas/*", "/Reservas/*", "/RESERVAS/*"})
+public class Reservas extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public Reservas() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		switch(request.getPathInfo()){
+		case "/buscar":
+			this.buscar(request,response);
+			break;
+			
+		case "/cancelar":
+			this.cancelar(request,response);
+			break;
+			
+		case "/reservar":
+			this.reservar(request,response);
+			break;
+			
+		default:
+			this.error(request,response);
+			break;
+		}
+		
+		
+	}
+	
+	private void buscar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+		Reserva r=new Reserva();
+		CtrlReserva ctrl=new CtrlReserva();
+		CtrlTipoElemento ctrlEl=new CtrlTipoElemento();
+		request.setAttribute("accion", "buscar");
+		r.setElemento(new Elemento());
+		r.getElemento().setTipoElemento(new TipoElemento());
+		r.setDetalle(request.getParameter("detalle"));
+		DateFormat format=new SimpleDateFormat("dd/MM/yyyy HH:mm",Locale.getDefault());
+		try {
+			r.setFechaHoraDesde(format.parse(request.getParameter("fechaHoraDesde")));
+		} catch (ParseException e) {
+			request.setAttribute("url", "start");
+			request.setAttribute("error", "Formato incorrecto de Fecha y Hora ingresado");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
+			dispatcher.forward(request,response);
+		}
+		try {
+			r.setFechaHoraHasta(format.parse(request.getParameter("fechaHoraHasta")));
+		} catch (ParseException e) {
+			request.setAttribute("url", "start");
+			request.setAttribute("error", "Formato incorrecto de Fecha y Hora ingresado");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
+			dispatcher.forward(request,response);
+		}
+		r.setPersona((Persona) request.getSession().getAttribute("user"));
+		r.getElemento().getTipoElemento().setNombre(request.getParameter("tipoElemento"));
+		try {
+			r.getElemento().setTipoElemento(ctrlEl.getByNombre(r.getElemento().getTipoElemento()));
+		} catch (Exception e1) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+		}
+		try {
+			request.setAttribute("listaResDisp", ctrl.buscaElementosDisp(r));
+		} catch (Exception e) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+		}
+		request.getSession().setAttribute("reservaActual", r);
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionReserva.jsp");
+		dispatcher.forward(request,response);
+	}
+	
+	private void reservar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+		Reserva r=new Reserva();
+		Elemento e=new Elemento();
+		CtrlReserva ctrl=new CtrlReserva();
+		CtrlABMCElemento ctrlEl=new CtrlABMCElemento();
+		request.setAttribute("accion", "reservar");
+		r=(Reserva) request.getSession().getAttribute("reservaActual");
+		e.setId(Integer.parseInt(request.getParameter("id")));
+		try {
+			e=ctrlEl.getById(e);
+		} catch (Exception e1) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+		}
+		r.setElemento(e);
+		try {
+			ctrl.registrarReserva(r);
+		} catch (Exception e1) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+		}
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionReserva.jsp");
+		dispatcher.forward(request,response);
+	}
+	
+	private void cancelar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+		response.getWriter().append("Cancelar, requested action: ").append(request.getPathInfo()).append(" through post");
+	}
+
+	private void error(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		response.setStatus(404);
+		response.sendError(HttpServletResponse.SC_NOT_FOUND, "La pagina solicitada no fue encontrada");
+	}
+}

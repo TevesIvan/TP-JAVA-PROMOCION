@@ -119,7 +119,37 @@ public class DataElemento {
 		return e;
 	}
 	
-	
+	public Elemento getById(Elemento ele) throws Exception{
+		Elemento e=null;
+		ResultSet rs=null;
+		PreparedStatement stmt =null;
+		try {
+			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
+					"select e.nombre,e.idElemento,t.idTipoElemento,t.nombre from elemento e inner join tipo_elemento t on t.idTipoElemento=e.idTipoElemento where e.idElemento=?");
+			stmt.setInt(1,ele.getId());
+			rs = stmt.executeQuery();
+			if(rs!=null && rs.next()){
+				e=new Elemento();
+				e.setNombre(rs.getString("e.nombre"));
+				e.setId(rs.getInt("e.idElemento"));
+				e.setTipoElemento(new TipoElemento());
+				e.getTipoElemento().setId(rs.getInt("t.idTipoElemento"));
+				e.getTipoElemento().setNombre(rs.getString("t.nombre"));
+			}
+			
+		} catch (Exception ex) {
+			throw ex;
+		} finally{
+			try {
+				if(rs!=null)rs.close();
+				if(stmt!=null)stmt.close();
+				FactoryConexion.getInstancia().releaseConn();
+			} catch (SQLException ex) {
+				throw ex;
+			}
+		}
+		return e;
+	}
 	
 	public void delete(Elemento e) throws Exception
 	{

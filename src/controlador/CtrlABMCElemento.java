@@ -45,4 +45,9 @@ public class CtrlABMCElemento {
 	{
 		return dataEle.getByNomYTip(el);
 	}
+	
+	public Elemento getById(Elemento el) throws Exception
+	{
+		return dataEle.getById(el);
+	}
 }
