@@ -41,4 +41,9 @@ public class CtrlReserva {
 	public void cancelarReserva(Reserva r) throws Exception{
 		dataRes.cancelarReserva(r);
 	}
+	
+	public Reserva getById(Reserva r) throws Exception
+	{
+		return dataRes.getById(r);
+	}
 }

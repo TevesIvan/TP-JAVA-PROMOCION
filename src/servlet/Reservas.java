@@ -139,7 +139,37 @@ public class Reservas extends HttpServlet {
 	}
 	
 	private void cancelar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
-		response.getWriter().append("Cancelar, requested action: ").append(request.getPathInfo()).append(" through post");
+		Reserva r=new Reserva();
+		CtrlReserva ctrl=new CtrlReserva();
+		request.setAttribute("accion", "cancelar");
+		try {
+			r.setId(Integer.parseInt(request.getParameter("id")));
+		} catch (NumberFormatException e2) {
+			request.setAttribute("url", "start");
+			request.setAttribute("error", "Formato incorrecto. ID debe ser numérico.");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
+			dispatcher.forward(request,response);
+		}
+		try {
+			if(ctrl.getById(r)==null)
+			{
+				request.setAttribute("url", "start");
+				request.setAttribute("error", "Reserva no encontrada.");
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
+				dispatcher.forward(request,response);
+			}
+		} catch (Exception e1) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+		}
+		try {
+			ctrl.cancelarReserva(r);
+		} catch (Exception e) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+		}
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionReserva.jsp");
+		dispatcher.forward(request,response);
 	}
 
 	private void error(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

@@ -70,6 +70,15 @@
 	</form>
 <%
 	}
+	else
+	{
+%>
+	Reserva cancelada con éxito.
+	<form class="form-Accion" id="myForm" name="myForm" action="start" method="post">
+		<button class="btn btn-lg" onclick="javascript: submitForm2()">Aceptar</button>
+	</form>
+<%
+	}
 %>
 </body>
 </html>

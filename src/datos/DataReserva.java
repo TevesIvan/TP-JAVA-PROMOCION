@@ -29,9 +29,9 @@ public class DataReserva {
 
 			stmt.setString(3, r.getDetalle());
 			stmt.setString(4, r.getEstado().toString());
-			stmt.setDate(5,new java.sql.Date(r.getFechaHoraReserva().getTime()));
-			stmt.setDate(6, new java.sql.Date(r.getFechaHoraDesde().getTime()));
-			stmt.setDate(7,new java.sql.Date(r.getFechaHoraHasta().getTime()));
+			stmt.setTimestamp(5,new java.sql.Timestamp(r.getFechaHoraReserva().getTime()));
+			stmt.setTimestamp(6, new java.sql.Timestamp(r.getFechaHoraDesde().getTime()));
+			stmt.setTimestamp(7,new java.sql.Timestamp(r.getFechaHoraHasta().getTime()));
 			stmt.setInt(1, r.getPersona().getId());
 			stmt.setInt(2, r.getElemento().getId());
 			stmt.executeUpdate();
@@ -48,7 +48,7 @@ public class DataReserva {
 			FactoryConexion.getInstancia().releaseConn();
 		} catch (SQLException e) {
 			
-			e.printStackTrace();
+			throw e;
 		}		
 	}
 
@@ -61,10 +61,10 @@ public class DataReserva {
 			stmt = FactoryConexion.getInstancia().getConn().prepareStatement(
 					"select e.idElemento,e.nombre,t.idTipoElemento,t.nombre,t.cantMax from elemento e inner join tipo_elemento t on e.idTipoElemento=t.idTipoElemento where t.nombre=? and e.idElemento not in(select e.idElemento from elemento e inner join reserva r on r.idElemento=e.idElemento where ((? between r.fechaHoraDesde and r.fechaHoraHasta) or (? between r.fechaHoraDesde and r.fechaHoraHasta)or(?<r.fechaHoraDesde and ?>r.fechaHoraHasta))and (r.estado=? or r.estado=?))");
 			stmt.setString(1,r.getElemento().getTipoElemento().getNombre());
-			stmt.setDate(2,new java.sql.Date(r.getFechaHoraDesde().getTime()));
-			stmt.setDate(3,new java.sql.Date(r.getFechaHoraHasta().getTime()));
-			stmt.setDate(4,new java.sql.Date(r.getFechaHoraDesde().getTime()));
-			stmt.setDate(5,new java.sql.Date(r.getFechaHoraHasta().getTime()));
+			stmt.setTimestamp(2,new java.sql.Timestamp(r.getFechaHoraDesde().getTime()));
+			stmt.setTimestamp(3,new java.sql.Timestamp(r.getFechaHoraHasta().getTime()));
+			stmt.setTimestamp(4,new java.sql.Timestamp(r.getFechaHoraDesde().getTime()));
+			stmt.setTimestamp(5,new java.sql.Timestamp(r.getFechaHoraHasta().getTime()));
 			stmt.setString(6,"Reservado");
 			stmt.setString(7,"Comenzado");
 			rs=stmt.executeQuery();
@@ -114,9 +114,9 @@ public class DataReserva {
 					r.getElemento().setTipoElemento(new TipoElemento());
 					r.setDetalle(rs.getString("r.detalle"));
 					r.setEstado(Enum.valueOf(Reserva.Estado.class,rs.getString("r.estado")));
-					r.setFechaHoraReserva(rs.getDate("r.fechaHoraReserva"));
-					r.setFechaHoraDesde(rs.getDate("r.fechaHoraDesde"));
-					r.setFechaHoraHasta(rs.getDate("r.fechaHoraHasta"));
+					r.setFechaHoraReserva(rs.getTimestamp("r.fechaHoraReserva"));
+					r.setFechaHoraDesde(rs.getTimestamp("r.fechaHoraDesde"));
+					r.setFechaHoraHasta(rs.getTimestamp("r.fechaHoraHasta"));
 					r.setId(rs.getInt("r.id"));
 					r.getPersona().setApellido(rs.getString("p.apellido"));
 					r.getPersona().setId(rs.getInt("p.id"));
@@ -171,9 +171,34 @@ public class DataReserva {
 			if(stmt!=null) stmt.close();
 			FactoryConexion.getInstancia().releaseConn();
 		} catch (SQLException e) {
-			
-			e.printStackTrace();
+			throw e;
 		}		
 	}
 
+	public Reserva getById(Reserva res) throws Exception{
+		Reserva r=null;
+		ResultSet rs=null;
+		PreparedStatement stmt =null;
+		try {
+			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
+					"select r.id from reserva r where r.id=?");
+			stmt.setInt(1,res.getId());
+			rs = stmt.executeQuery();
+			if(rs!=null && rs.next()){
+				r=new Reserva();
+				r.setId(rs.getInt("r.id"));
+			}	
+		} catch (Exception ex) {
+			throw ex;
+		} finally{
+			try {
+				if(rs!=null)rs.close();
+				if(stmt!=null)stmt.close();
+				FactoryConexion.getInstancia().releaseConn();
+			} catch (SQLException ex) {
+				throw ex;
+			}
+		}
+		return r;
+	}
 }
