@@ -137,7 +137,6 @@ public class ABMCPersona extends HttpServlet {
 	}
 	
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		//response.getWriter().append("Eliminar, requested action: ").append(request.getPathInfo()).append(" through post");
 		Persona p=new Persona();
 		CrtlABMCPersona ctrl= new CrtlABMCPersona();
 		request.setAttribute("accion", "eliminar");
@@ -153,7 +152,6 @@ public class ABMCPersona extends HttpServlet {
 	}
 	
 	private void modificar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		//response.getWriter().append("Modificar, requested action: ").append(request.getPathInfo()).append(" through post");
 		if(request.getParameter("dni").equals("") || request.getParameter("apellido").equals("") || request.getParameter("nombre").equals("") || request.getParameter("pass").equals("") || request.getParameter("user").equals(""))
 		{
 			request.setAttribute("url", "start");

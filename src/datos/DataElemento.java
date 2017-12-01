@@ -156,9 +156,8 @@ public class DataElemento {
 		PreparedStatement stmt =null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"delete from elemento where nombre=? and idTipoElemento=?");
-			stmt.setString(1, e.getNombre());
-			stmt.setInt(2,e.getTipoElemento().getId());
+					"delete from elemento where idElemento=?");
+			stmt.setInt(1,e.getId());
 			stmt.executeUpdate();
 		} catch (SQLException ex) {
 			throw ex;

@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controlador.CrtlABMCPersona;
+import controlador.CtrlABMCElemento;
 import controlador.CtrlReserva;
+import controlador.CtrlTipoElemento;
 import entidades.Persona;
 
 /**
@@ -72,7 +74,6 @@ public class Menu extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");			
 			}
 		try {
-			//request.getRequestDispatcher("WEB-INF/ABMCPersona.jsp").forward(request, response);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/ABMCPersona.jsp");
 			  dispatcher.forward(request,response);
 		} catch (ServletException e) {
@@ -82,11 +83,38 @@ public class Menu extends HttpServlet {
 	}
 	
 	private void elementos(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		response.getWriter().append("Elementos, requested action: ").append(request.getPathInfo()).append(" through post");
+		CtrlABMCElemento ctrl=new CtrlABMCElemento();
+		try {
+			request.setAttribute("listaEle", ctrl.getAll());
+			request.setAttribute("listaTip", ctrl.getAllTipoElemento());
+		} catch (Exception e) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");
+		}
+		try {
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/ABMCElemento.jsp");
+			  dispatcher.forward(request,response);
+		} catch (Exception e) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");
+		}
 	}
 	
 	private void tipos(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.getWriter().append("Tipos, requested action: ").append(request.getPathInfo()).append(" through post");
+		CtrlTipoElemento ctrl=new CtrlTipoElemento();
+		try {
+			request.setAttribute("listaTip", ctrl.getAll());
+		} catch (Exception e) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");
+		}
+		try {
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/ABMCTipoElemento.jsp");
+			  dispatcher.forward(request,response);
+		} catch (Exception e) {
+			response.setStatus(502);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");
+		}
 	}
 	
 	private void reservas(HttpServletRequest request, HttpServletResponse response) throws IOException {

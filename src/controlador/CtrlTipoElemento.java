@@ -43,4 +43,8 @@ public class CtrlTipoElemento {
 		t.setNombre(nombre);
 		return getByNombre(t);
 	}
+	
+	public TipoElemento getById(TipoElemento t) throws Exception{
+		return this.dataTip.getById(t);
+	}
 }

@@ -84,8 +84,8 @@ public class DataTipoElemento {
 		PreparedStatement stmt =null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"delete from tipo_elemento where nombre=?");
-			stmt.setString(1, t.getNombre());
+					"delete from tipo_elemento where idTipoElemento=?");
+			stmt.setInt(1, t.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw e;
@@ -108,6 +108,37 @@ public class DataTipoElemento {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
 					"select nombre,cantMax,idTipoElemento from tipo_elemento where nombre=?");
 			stmt.setString(1, tip.getNombre());
+			rs = stmt.executeQuery();
+			if(rs!=null && rs.next()){
+				t=new TipoElemento();
+				t.setNombre(rs.getString("nombre"));
+				t.setCantMax(rs.getInt("cantMax"));
+				t.setId(rs.getInt("idTipoElemento"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally{
+			try {
+				if(rs!=null)rs.close();
+				if(stmt!=null)stmt.close();
+				FactoryConexion.getInstancia().releaseConn();
+			} catch (SQLException e) {
+				throw e;
+			}
+		}
+		return t;
+	}
+
+	public TipoElemento getById(TipoElemento tip) throws Exception{
+		TipoElemento t=null;
+		ResultSet rs=null;
+		PreparedStatement stmt =null;
+		try {
+			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
+					"select nombre,cantMax,idTipoElemento from tipo_elemento where idTipoElemento=?");
+			stmt.setInt(1, tip.getId());
 			rs = stmt.executeQuery();
 			if(rs!=null && rs.next()){
 				t=new TipoElemento();
