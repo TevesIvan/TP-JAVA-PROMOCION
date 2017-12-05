@@ -154,17 +154,34 @@ public class ABMCElemento extends HttpServlet {
 		else
 		{
 			Elemento e=new Elemento();
+			Elemento ele=new Elemento();
 			CtrlABMCElemento ctrl= new CtrlABMCElemento();
 			request.setAttribute("accion", "eliminar");
 			e.setId(Integer.parseInt(request.getParameter("id")));
 			try {
-				ctrl.delete(e);
-			} catch (Exception ex) {
+				ele=ctrl.getById(e);
+			} catch (Exception e1) {
 				response.setStatus(502);
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
 			}
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionElemento.jsp");
-			dispatcher.forward(request,response);
+			if(ele==null)
+			{
+				request.setAttribute("url", "start");
+				request.setAttribute("error", "Elemento no encontrado.");
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
+				dispatcher.forward(request,response);
+			}
+			else
+			{
+				try {
+					ctrl.delete(e);
+				} catch (Exception ex) {
+					response.setStatus(502);
+					response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+				}
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionElemento.jsp");
+				dispatcher.forward(request,response);
+			}	
 		}
 	}
 	
@@ -179,6 +196,7 @@ public class ABMCElemento extends HttpServlet {
 		else
 		{
 			Elemento e=new Elemento();
+			Elemento ele=new Elemento();
 			TipoElemento t=new TipoElemento();
 			CtrlABMCElemento ctrl= new CtrlABMCElemento();
 			CtrlTipoElemento ctrlTip= new CtrlTipoElemento();
@@ -193,13 +211,29 @@ public class ABMCElemento extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
 			}
 			try {
-				ctrl.update(e);
-			} catch (Exception ex) {
+				ele=ctrl.getById(e);
+			} catch (Exception e1) {
 				response.setStatus(502);
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
 			}
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionElemento.jsp");
-			dispatcher.forward(request,response);
+			if(ele==null)
+			{
+				request.setAttribute("url", "start");
+				request.setAttribute("error", "Elemento no encontrado.");
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
+				dispatcher.forward(request,response);
+			}
+			else
+			{
+				try {
+					ctrl.update(e);
+				} catch (Exception ex) {
+					response.setStatus(502);
+					response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+				}
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionElemento.jsp");
+				dispatcher.forward(request,response);
+			}	
 		}
 	}
 

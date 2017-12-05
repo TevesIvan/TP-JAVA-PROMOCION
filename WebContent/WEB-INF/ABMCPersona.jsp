@@ -49,6 +49,7 @@
         <input name="apellido" id="txtApellido" class="form-control" placeholder="Apellido" autofocus="" type=""><br>
         <label for="lblNombre" class="sr-only">Nombre</label>
         <input name="nombre" id="txtNombre" class="form-control" placeholder="Nombre" autofocus="" type=""><br>
+        <input type="hidden" value="0" name=habilitado>
         <input type="checkbox" name="habilitado" value="si">Habilitado<br>
         <select name="categoria">
         	<%

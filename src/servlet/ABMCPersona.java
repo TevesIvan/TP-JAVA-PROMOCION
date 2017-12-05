@@ -138,17 +138,34 @@ public class ABMCPersona extends HttpServlet {
 	
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		Persona p=new Persona();
+		Persona per=new Persona();
 		CrtlABMCPersona ctrl= new CrtlABMCPersona();
 		request.setAttribute("accion", "eliminar");
 		p.setDni(request.getParameter("dni"));
 		try {
-			ctrl.delete(p);
-		} catch (Exception e) {
+			per=ctrl.getByDni(p);
+		} catch (Exception e1) {
 			response.setStatus(502);
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
 		}
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionPersona.jsp");
-		dispatcher.forward(request,response);
+		if(per==null)
+		{
+			request.setAttribute("url", "start");
+			request.setAttribute("error", "Persona no encontrada.");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
+			dispatcher.forward(request,response);
+		}
+		else
+		{
+			try {
+				ctrl.delete(p);
+			} catch (Exception e) {
+				response.setStatus(502);
+				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+			}
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionPersona.jsp");
+			dispatcher.forward(request,response);
+		}		
 	}
 	
 	private void modificar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -162,6 +179,7 @@ public class ABMCPersona extends HttpServlet {
 		else
 		{
 			Persona p=new Persona();
+			Persona per=new Persona();
 			Categoria c=new Categoria();
 			CrtlABMCPersona ctrl= new CrtlABMCPersona();
 			request.setAttribute("accion", "modificar");
@@ -178,21 +196,37 @@ public class ABMCPersona extends HttpServlet {
 			p.setContraseña(request.getParameter("pass"));
 			if(request.getParameter("habilitado").equals("si"))
 			{
-				p.setHabilitado(true);
+				p.setHabilitado(false);
 			}
 			else
 			{
-				p.setHabilitado(false);
+				p.setHabilitado(true);
 			}
 			p.setUsuario(request.getParameter("user"));
 			try {
-				ctrl.update(p);
-			} catch (Exception e) {
+				per=ctrl.getByDni(p);
+			} catch (Exception e1) {
 				response.setStatus(502);
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
 			}
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionPersona.jsp");
-			dispatcher.forward(request,response);
+			if(per==null)
+			{
+				request.setAttribute("url", "start");
+				request.setAttribute("error", "Persona no encontrada.");
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
+				dispatcher.forward(request,response);
+			}
+			else
+			{
+				try {
+					ctrl.update(p);
+				} catch (Exception e) {
+					response.setStatus(502);
+					response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
+				}
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/AccionPersona.jsp");
+				dispatcher.forward(request,response);
+			}
 		}
 	}
 	
