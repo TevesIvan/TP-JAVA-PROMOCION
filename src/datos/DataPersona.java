@@ -83,12 +83,38 @@ public class DataPersona {
 			if(stmt!=null) stmt.close();
 			FactoryConexion.getInstancia().releaseConn();
 		} catch (SQLException e) {
-			
-			e.printStackTrace();
+			throw e;
 		}
 		
 	}
 	
+public void update(Persona p) throws Exception{
+		
+		PreparedStatement stmt =null;
+		try {
+			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
+					"update persona set apellido=?, nombre=?, usuario=?, contraseña=?, habilitado=?, idCategoria=? where dni=?",
+					PreparedStatement.RETURN_GENERATED_KEYS
+					);
+			stmt.setString(2, p.getNombre());
+			stmt.setString(1, p.getApellido());
+			stmt.setString(7, p.getDni());
+			stmt.setBoolean(5, p.isHabilitado());
+			stmt.setString(3, p.getUsuario());
+			stmt.setString(4, p.getContraseña());
+			stmt.setInt(6,p.getCategoria().getIdCategoria());
+			stmt.executeUpdate();
+		} catch (SQLException | AppDataException e) {
+			throw e;
+		}
+		try {
+			if(stmt!=null) stmt.close();
+			FactoryConexion.getInstancia().releaseConn();
+		} catch (SQLException e) {
+			throw e;
+		}
+		
+	}
 	
 	public Persona getByDni(Persona per) throws Exception{
 		Persona p=null;
@@ -114,7 +140,6 @@ public class DataPersona {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw e;
 		} finally{
 			try {
@@ -157,13 +182,14 @@ public class DataPersona {
 		PreparedStatement stmt =null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"select p.nombre, apellido, dni, habilitado, usuario, contraseña, id, c.idCategoria from persona p inner join categoria c on p.idCategoria=c.idCategoria where usuario=? and contraseña=?");
+					"select p.nombre, p.apellido, p.dni, p.habilitado, p.usuario, p.contraseña, p.id, c.idCategoria, c.nombre from persona p inner join categoria c on p.idCategoria=c.idCategoria where usuario=? and contraseña=? and habilitado=?");
 			stmt.setString(1, per.getUsuario());
 			stmt.setString(2, per.getContraseña());
+			stmt.setInt(3, 1);
 			rs = stmt.executeQuery();
 			if(rs!=null && rs.next()){
 				p=new Persona();
-				p.setNombre(rs.getString("nombre"));
+				p.setNombre(rs.getString("p.nombre"));
 				p.setApellido(rs.getString("apellido"));
 				p.setDni(rs.getString("dni"));
 				p.setHabilitado(rs.getBoolean("habilitado"));
@@ -172,7 +198,7 @@ public class DataPersona {
 				p.setId(rs.getInt("id"));
 				p.setCategoria(new Categoria());
 				p.getCategoria().setIdCategoria(rs.getInt("idCategoria"));
-				p.getCategoria().setNombre(rs.getString("nombre"));
+				p.getCategoria().setNombre(rs.getString("c.nombre"));
 			}
 			
 		} catch (Exception e) {

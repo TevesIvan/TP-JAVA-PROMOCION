@@ -3,6 +3,7 @@ package datos;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.sql.PreparedStatement;
@@ -57,16 +58,20 @@ public class DataReserva {
 		PreparedStatement stmt=null;
 		ResultSet rs=null;
 		ArrayList<Elemento> ele= new ArrayList<Elemento>();
+		System.out.println((r.getFechaHoraHasta().getTime()-r.getFechaHoraDesde().getTime())/(1000*3600));
+		System.out.println((r.getFechaHoraDesde().getTime()-r.getFechaHoraReserva().getTime())/(1000*3600*24));
 		try {
 			stmt = FactoryConexion.getInstancia().getConn().prepareStatement(
-					"select e.idElemento,e.nombre,t.idTipoElemento,t.nombre,t.cantMax from elemento e inner join tipo_elemento t on e.idTipoElemento=t.idTipoElemento where t.nombre=? and e.idElemento not in(select e.idElemento from elemento e inner join reserva r on r.idElemento=e.idElemento where ((? between r.fechaHoraDesde and r.fechaHoraHasta) or (? between r.fechaHoraDesde and r.fechaHoraHasta)or(?<r.fechaHoraDesde and ?>r.fechaHoraHasta))and (r.estado=? or r.estado=?))");
+					"select e.idElemento,e.nombre,t.idTipoElemento,t.nombre,t.cantMax,t.maxTiempo,t.diasAntMax from elemento e inner join tipo_elemento t on e.idTipoElemento=t.idTipoElemento where t.nombre=? and t.maxTiempo>=? and t.diasAntMax>? and e.idElemento not in(select e.idElemento from elemento e inner join reserva r on r.idElemento=e.idElemento where ((? between r.fechaHoraDesde and r.fechaHoraHasta) or (? between r.fechaHoraDesde and r.fechaHoraHasta)or(?<r.fechaHoraDesde and ?>r.fechaHoraHasta))and (r.estado=? or r.estado=?))");
 			stmt.setString(1,r.getElemento().getTipoElemento().getNombre());
-			stmt.setTimestamp(2,new java.sql.Timestamp(r.getFechaHoraDesde().getTime()));
-			stmt.setTimestamp(3,new java.sql.Timestamp(r.getFechaHoraHasta().getTime()));
+			stmt.setLong(2, (r.getFechaHoraHasta().getTime()-r.getFechaHoraDesde().getTime())/(1000*3600));
+			stmt.setLong(3, (r.getFechaHoraDesde().getTime()-r.getFechaHoraReserva().getTime())/(1000*3600*24));
 			stmt.setTimestamp(4,new java.sql.Timestamp(r.getFechaHoraDesde().getTime()));
 			stmt.setTimestamp(5,new java.sql.Timestamp(r.getFechaHoraHasta().getTime()));
-			stmt.setString(6,"Reservado");
-			stmt.setString(7,"Comenzado");
+			stmt.setTimestamp(6,new java.sql.Timestamp(r.getFechaHoraDesde().getTime()));
+			stmt.setTimestamp(7,new java.sql.Timestamp(r.getFechaHoraHasta().getTime()));
+			stmt.setString(8,"Reservado");
+			stmt.setString(9,"Comenzado");
 			rs=stmt.executeQuery();
 			if(rs!=null){
 				while(rs.next()){
@@ -101,9 +106,11 @@ public class DataReserva {
 		ArrayList<Reserva> reservas= new ArrayList<Reserva>();
 		try {
 			stmt = FactoryConexion.getInstancia()
-					.getConn().prepareStatement("select * from reserva r inner join persona p on p.id=r.idPersona inner join elemento e on e.idElemento=r.idElemento inner join categoria c on c.idCategoria=p.idCategoria inner join tipo_elemento t on t.idTipoElemento=e.idTipoElemento where p.id=? and r.estado=?");
+					.getConn().prepareStatement("select * from reserva r inner join persona p on p.id=r.idPersona inner join elemento e on e.idElemento=r.idElemento inner join categoria c on c.idCategoria=p.idCategoria inner join tipo_elemento t on t.idTipoElemento=e.idTipoElemento where (p.id=? or ?=?) and r.estado=?");
 			stmt.setInt(1, usu.getId());
-			stmt.setString(2,"Reservado");
+			stmt.setString(4,"Reservado");
+			stmt.setString(2, usu.getCategoria().getNombreCat());
+			stmt.setString(3, "Administrador");
 			rs=stmt.executeQuery();
 			if(rs!=null){
 				while(rs.next()){

@@ -26,8 +26,7 @@ public class CtrlTipoElemento {
 	}
 	
 	public void update(TipoElemento t) throws Exception{
-		dataTip.delete(t);
-		dataTip.add(t);
+		dataTip.update(t);
 	}
 	
 	public ArrayList<TipoElemento> getAll() throws Exception{

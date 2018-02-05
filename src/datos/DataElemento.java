@@ -85,6 +85,30 @@ public class DataElemento {
 		
 	}
 	
+	public void update(Elemento e) throws Exception{
+		
+		PreparedStatement stmt =null;
+		try {
+			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
+					"update elemento set nombre=?, idTipoElemento=? where idElemento=?",
+					PreparedStatement.RETURN_GENERATED_KEYS
+					);
+			stmt.setInt(2, e.getTipoElemento().getId());
+			stmt.setString(1, e.getNombre());
+			stmt.setInt(3, e.getId());
+			stmt.executeUpdate();
+		} catch (SQLException | AppDataException ex) {
+			throw ex;
+		}
+		try {
+			if(stmt!=null) stmt.close();
+			FactoryConexion.getInstancia().releaseConn();
+		} catch (SQLException ex) {
+			
+			throw ex;
+		}
+		
+	}
 	
 	public Elemento getByNomYTip(Elemento ele) throws Exception{
 		Elemento e=null;

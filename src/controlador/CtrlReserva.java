@@ -19,8 +19,8 @@ public class CtrlReserva {
 	}
 	
 
-	public ArrayList<TipoElemento> getTiposElementos() throws Exception {
-		return dataTip.getAll();
+	public ArrayList<TipoElemento> getTiposElementos(Persona p) throws Exception {
+		return dataTip.getByUsuario(p);
 	}
 
 

@@ -59,7 +59,7 @@ public class Start extends HttpServlet {
 					if(pers==null)
 					{
 						request.setAttribute("url", "login.html");
-						request.setAttribute("error", "Nombre de usuario y/o contraseña no validos");
+						request.setAttribute("error", "Error al ingresar al Sistema. Verifique usuario, contraseña y habilitación.");
 						request.getRequestDispatcher("Error.jsp").forward(request, response);
 					}
 					else

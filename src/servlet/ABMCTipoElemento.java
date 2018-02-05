@@ -121,6 +121,16 @@ public class ABMCTipoElemento extends HttpServlet {
 			request.setAttribute("accion", "insertar");
 			t.setNombre(request.getParameter("nombre"));
 			t.setCantMax(Integer.parseInt(request.getParameter("cantMax")));
+			t.setMaxTiempo(Integer.parseInt(request.getParameter("maxTiempo")));
+			t.setDiasAntMax(Integer.parseInt(request.getParameter("diasAntMax")));
+			if(request.getParameter("encargado").equals("si"))
+			{
+				t.setEncargado(true);
+			}
+			else
+			{
+				t.setEncargado(false);
+			}
 			try {
 				ctrl.add(t);
 			} catch (Exception ex) {
@@ -191,6 +201,16 @@ public class ABMCTipoElemento extends HttpServlet {
 			t.setNombre(request.getParameter("nombre"));
 			t.setId(Integer.parseInt(request.getParameter("id")));
 			t.setCantMax(Integer.parseInt(request.getParameter("cantMax")));
+			t.setMaxTiempo(Integer.parseInt(request.getParameter("maxTiempo")));
+			t.setDiasAntMax(Integer.parseInt(request.getParameter("diasAntMax")));
+			if(request.getParameter("encargado").equals("si"))
+			{
+				t.setEncargado(true);
+			}
+			else
+			{
+				t.setEncargado(false);
+			}
 			try {
 				tip=ctrl.getById(t);
 			} catch (Exception e) {

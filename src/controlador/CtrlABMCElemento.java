@@ -28,8 +28,7 @@ public class CtrlABMCElemento {
 	}
 	
 	public void update(Elemento el) throws Exception{
-		dataEle.delete(el);
-		dataEle.add(el);
+		dataEle.update(el);
 	}
 	
 	public ArrayList<Elemento> getAll() throws Exception{

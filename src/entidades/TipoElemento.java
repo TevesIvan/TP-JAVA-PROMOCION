@@ -23,7 +23,26 @@ public class TipoElemento implements Serializable{
 	public void setCantMax(int cantMax) {
 		this.cantMax = cantMax;
 	}
-	public int id,cantMax;
+	public int id,cantMax,maxTiempo,diasAntMax;
+	public int getMaxTiempo() {
+		return maxTiempo;
+	}
+	public void setMaxTiempo(int maxTiempo) {
+		this.maxTiempo = maxTiempo;
+	}
+	public int getDiasAntMax() {
+		return diasAntMax;
+	}
+	public void setDiasAntMax(int diasAntMax) {
+		this.diasAntMax = diasAntMax;
+	}
+	public boolean encargado;
+	public boolean isEncargado() {
+		return encargado;
+	}
+	public void setEncargado(boolean encargado) {
+		this.encargado = encargado;
+	}
 	public TipoElemento(String nombre,int id,int cantMax)
 	{
 		this.nombre=nombre;

@@ -28,8 +28,7 @@ public class CrtlABMCPersona {
 	}
 	
 	public void update(Persona p) throws Exception{
-		dataPer.delete(p);
-		dataPer.add(p);
+		dataPer.update(p);
 	}
 	
 	public Persona getByDni(Persona p) throws Exception{

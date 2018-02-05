@@ -94,6 +94,12 @@ public class Reservas extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
 			dispatcher.forward(request,response);
 		}
+		if(r.getFechaHoraDesde().before(r.getFechaHoraReserva()) || r.getFechaHoraHasta().before(r.getFechaHoraReserva())){
+			request.setAttribute("url", "start");
+			request.setAttribute("error", "Fecha/s anteriores al día de hoy ingresada/s. Ingrese fechas futuras al día de hoy.");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
+			dispatcher.forward(request,response);
+		}
 		r.setPersona((Persona) request.getSession().getAttribute("user"));
 		r.getElemento().getTipoElemento().setNombre(request.getParameter("tipoElemento"));
 		try {

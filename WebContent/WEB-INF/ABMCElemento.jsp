@@ -40,7 +40,15 @@
 		<form class="form-ABMCElemento" id="myForm" name="myForm" action="" method="post">
         <h2 class="form-ABMCElemento-heading">ABMC de Elementos</h2>
         <label for="inputId" class="sr-only">ID</label>
-        <input name="id" id="inputId" class="form-control" placeholder="ID" autofocus="" type=""><br>
+        <select name="id">
+        	<%
+        		for(Elemento e : listaEle){
+        	%>
+        	<option value="<%=e.getId()%>"><%=e.getId()%></option>
+        	<%
+        		}
+        	%>
+        </select><br>
         <label for="inputNombre" class="sr-only">Nombre</label>
         <input name="nombre" id="inputNombre" class="form-control" placeholder="Nombre" type=""><br>
         <select name="tipo">

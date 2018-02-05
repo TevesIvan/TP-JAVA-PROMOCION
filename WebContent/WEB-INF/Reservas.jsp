@@ -65,7 +65,15 @@
         
         <h2 class="form-ABMCPersona-heading">Cancelar Reserva</h2>
         <label for="inputId" class="sr-only">ID</label>
-        <input name="id" id="inputId" class="form-control" placeholder="Id" autofocus="" type=""><br>
+        <select name="id">
+        	<%
+        		for(Reserva r : listaRes){
+        	%>
+        	<option value="<%=r.getId()%>"><%=r.getId()%></option>
+        	<%
+        		}
+        	%>
+        </select><br>
         <button class="btn btn-lg " onclick="javascript: submitForm('reservas/cancelar')">Cancelar</button>
 </form>		
 </body>

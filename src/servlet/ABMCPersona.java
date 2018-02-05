@@ -196,11 +196,11 @@ public class ABMCPersona extends HttpServlet {
 			p.setContraseña(request.getParameter("pass"));
 			if(request.getParameter("habilitado").equals("si"))
 			{
-				p.setHabilitado(false);
+				p.setHabilitado(true);
 			}
 			else
 			{
-				p.setHabilitado(true);
+				p.setHabilitado(false);
 			}
 			p.setUsuario(request.getParameter("user"));
 			try {

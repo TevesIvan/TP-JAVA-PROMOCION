@@ -56,8 +56,17 @@
 		
 	<form class="form-Accion" id="myForm" name="myForm" action="start" method="post">
 		<label for="inputId" class="sr-only">ID Elemento</label>
-        <input name="id" id="inputId" class="form-control" placeholder="ID" required="" autofocus="" type=""><br>
+        <select name="id">
+        	<%
+        		for(Elemento e : listaResDisp){
+        	%>
+        	<option value="<%=e.getId()%>"><%=e.getId()%></option>
+        	<%
+        		}
+        	%>
+        </select><br>
 		<button class="btn btn-lg" onclick="javascript: submitForm('reservas/reservar')">Reservar</button>
+		<button class="btn btn-lg" onclick="javascript: submitForm2()">Cancelar</button>
 	</form>
 <%
 	}}

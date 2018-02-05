@@ -121,7 +121,7 @@ public class Menu extends HttpServlet {
 		CtrlReserva ctrl=new CtrlReserva();
 		try {
 			request.setAttribute("listaRes", ctrl.getAllUsuario((Persona) request.getSession().getAttribute("user")));
-			request.setAttribute("listaTip", ctrl.getTiposElementos());
+			request.setAttribute("listaTip", ctrl.getTiposElementos((Persona) request.getSession().getAttribute("user")));
 		} catch (Exception e) {
 			response.setStatus(502);
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");

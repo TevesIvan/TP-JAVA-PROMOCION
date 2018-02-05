@@ -10,6 +10,9 @@
 <title>Personas</title>
 <script type="text/javascript">
     	function submitForm(met) {
+    		if(document.getElementById("box").checked){
+    			document.getElementById("boxHidden").disabled=true;
+    		}
     		window.history.pushState({}, document.title, "/" + "TP_JAVA_WEB" + "/" );
     		document.myForm.action=met;
         }
@@ -43,14 +46,14 @@
         <input name="user" id="inputUser" class="form-control" placeholder="User" autofocus="" type=""><br>
         <label for="inputPass" class="sr-only">Password</label>
         <input name="pass" id="inputPass" class="form-control" placeholder="Password" type="Password"><br>
-         <label for="lblDni" class="sr-only">DNI</label>
+        <label for="lblDni" class="sr-only">DNI</label>
         <input name="dni" id="txtDni" class="form-control" placeholder="DNI" required="" autofocus="" type=""><br>
         <label for="lblApellido" class="sr-only">Apellido</label>
         <input name="apellido" id="txtApellido" class="form-control" placeholder="Apellido" autofocus="" type=""><br>
         <label for="lblNombre" class="sr-only">Nombre</label>
         <input name="nombre" id="txtNombre" class="form-control" placeholder="Nombre" autofocus="" type=""><br>
-        <input type="hidden" value="0" name=habilitado>
-        <input type="checkbox" name="habilitado" value="si">Habilitado<br>
+        <input type="hidden" value="no" id="boxHidden" name=habilitado>
+        <input type="checkbox" id="box" value="si" name="habilitado">Habilitado<br>
         <select name="categoria">
         	<%
         		ArrayList<Categoria>listaCat=(ArrayList<Categoria>)request.getAttribute("listaCat");

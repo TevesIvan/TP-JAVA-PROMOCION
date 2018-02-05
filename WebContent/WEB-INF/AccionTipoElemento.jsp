@@ -24,6 +24,7 @@
 	<label>ID: <%=((TipoElemento)request.getAttribute("tipoElemento")).getId()%></label><br>
 	<label>Nombre: <%=((TipoElemento)request.getAttribute("tipoElemento")).getNombre()%></label><br>
 	<label>Cantidad Máxima: <%=((TipoElemento)request.getAttribute("tipoElemento")).getCantMax() %></label><br>
+	<label>Encargado: <%=((TipoElemento)request.getAttribute("tipoElemento")).isEncargado()%></label><br>
 </form>
 <%
 	}
