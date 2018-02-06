@@ -59,6 +59,10 @@ public class Menu extends HttpServlet {
 			this.reservas(request,response);
 			break;
 			
+		case "/salir":
+			this.salir(request,response);
+			break;
+			
 		default:
 			this.error(request,response);
 			break;
@@ -133,6 +137,12 @@ public class Menu extends HttpServlet {
 			response.setStatus(502);
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de Servidor");
 		}
+	}
+	
+	private void salir(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		request.getSession().invalidate();
+		response.sendRedirect("/TP_JAVA_WEB/");
+		return;
 	}
 	
 	private void error(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
