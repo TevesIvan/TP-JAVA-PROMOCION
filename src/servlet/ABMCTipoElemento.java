@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -197,7 +198,14 @@ public class ABMCTipoElemento extends HttpServlet {
 			{
 				try {
 					ctrl.delete(t);
-				} catch (Exception ex) {
+				}catch (SQLException e)
+				{
+					request.setAttribute("url", "start");
+					request.setAttribute("error", "Tipo de Elemento imposible de eliminar. Revise los elementos reservados del tipo a eliminar.");
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Error.jsp");
+					dispatcher.forward(request,response);
+				}
+				catch (Exception ex) {
 					response.setStatus(502);
 					response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error de servidor");
 				}

@@ -24,7 +24,6 @@
     </script>
 </head>
 <body>
-<h1>Bienvenido <%=((Persona)session.getAttribute("user")).getNombre() %></h1>
 <%
 	if(request.getAttribute("accion").equals("buscar"))
 	{
@@ -32,52 +31,55 @@
 		if(listaResDisp.isEmpty())
 		{
 		%>
-			Elementos no disponibles.
+			<h3>Elementos no disponibles.</h3>
 				<form class="form-Accion" id="myForm" name="myForm" action="start" method="post">
-					<button class="btn btn-lg" onclick="javascript: submitForm2()">Aceptar</button>
+					<button class="btn btn-primary" onclick="javascript: submitForm2()">Aceptar</button>
 				</form>
 		<%
 		}else
 		{
 		%>
-<h2>Elementos Disponibles para Reserva</h2><br>
-<table>
+<h3>Elementos Disponibles para Reserva</h3><br>
+<table class="table">
+	<thead>
 		<tr>
-			<th>ID</th>
    			<th>Nombre</th>
  	    </tr>
+ 	</thead>
+ 	<tbody>
 		<%
 		for(Elemento e : listaResDisp){
 		%>
 		<tr>
-			<td><%=e.getId()%></td>
 			<td><%=e.getNombre()%></td>
 		</tr>
 		<%
 			}
 		%>
+		</tbody>
 		</table>
 		
 	<form class="form-Accion" id="myForm" name="myForm" action="start" method="post">
-		<label for="inputId" class="sr-only">ID Elemento</label>
-        <select name="id">
+	<div class="form-group">
+		<label for="inputId">Elemento</label>
+        <select class="form-control" name="id" id="inputId">
         	<%
         		for(Elemento e : listaResDisp){
         	%>
-        	<option value="<%=e.getId()%>"><%=e.getId()%></option>
+        	<option value="<%=e.getId()%>"><%=e.getNombre()+", "+e.getTipoElemento().getNombre()%></option>
         	<%
         		}
         	%>
-        </select><br>
-		<button class="btn btn-lg" onclick="javascript: submitForm('reservas/reservar')">Reservar</button>
-		<button class="btn btn-lg" onclick="javascript: submitForm2()">Cancelar</button>
+        </select></div><br>
+		<button class="btn btn-primary" onclick="javascript: submitForm('reservas/reservar')">Reservar</button>
+		<button class="btn btn-danger" onclick="javascript: submitForm2()">Cancelar</button>
 	</form>
 <%
 	}}
 	else if(request.getAttribute("accion").equals("reservar"))
 	{
 %> 
-	Elemento reservado con éxito.
+	<h3>Elemento reservado con éxito.</h3>
 	<form class="form-Accion" id="myForm" name="myForm" action="start" method="post">
 		<button class="btn btn-lg" onclick="javascript: submitForm2()">Aceptar</button>
 	</form>
@@ -86,7 +88,7 @@
 	else
 	{
 %>
-	Reserva cancelada con éxito.
+	<h3>Reserva cancelada con éxito.</h3>
 	<form class="form-Accion" id="myForm" name="myForm" action="start" method="post">
 		<button class="btn btn-lg" onclick="javascript: submitForm2()">Aceptar</button>
 	</form>

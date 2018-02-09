@@ -25,54 +25,73 @@
 </head>
 <body>
 <form class="form-menu" id="myForm" name="myForm" action="" method="post">
-	<nav class="navbar navbar-default" role="navigation">
+	<nav class="navbar navbar-default container-fluid navbar-fixed-top" role="navigation">
 	<a class="navbar-brand">Sistema Reservas</a>
+	<p class="navbar-text"><%=((Persona)session.getAttribute("user")).getApellido()+" "+ ((Persona)session.getAttribute("user")).getNombre()%> </p>
 		<%
         	if(((Persona)session.getAttribute("user")).getCategoria().getNombreCat().equals("Administrador")){
    		%>
+   	<p class="navbar-text" style="color:blue">Administrador</p>
 	<button type="submit" class="btn btn-default navbar-btn" onclick="javascript: submitForm('menu/personas')">Personas</button>
 	<button type="submit" class="btn btn-default navbar-btn" onclick="javascript: submitForm('menu/tipos')">Tipos de Elementos</button>
 		<%
         	}
-    	%>
-	<button type="submit" class="btn btn-default navbar-btn" onclick="javascript: submitForm('menu/elementos')">Elementos</button>
+        	else if(((Persona)session.getAttribute("user")).getCategoria().getNombreCat().equals("Encargado")){
+        %>
+    <p class="navbar-text" style="color:blue">Encargado</p>
+       	<%
+            }else{
+        %>
+    <p class="navbar-text" style="color:blue">Usuario</p>
+        <%
+           }
+        %>
+	<button type="submit" class="btn btn-info navbar-btn" onclick="javascript: submitForm('menu/elementos')">Elementos</button>
 	<button type="submit" class="btn btn-default navbar-btn" onclick="javascript: submitForm('menu/reservas')">Reservas</button>
-	<button type="submit" class="btn btn-danger navbar-btn" onclick="javascript: submitForm('menu/salir')">Salir</button>
+	<button type="submit" class="btn btn-danger navbar-btn navbar-right" onclick="javascript: submitForm('menu/salir')">Salir</button>
 	</nav>	
-<h1>Bienvenido <%=((Persona)session.getAttribute("user")).getNombre() %></h1>
-<table>
+<table class="table" style="margin-top:50px">
+	<thead>
 		<tr>
-   			<th>ID</th>
   		    <th>Nombre</th>
   		    <th>Tipo Elemento</th>
  	    </tr>
+ 	 </thead>
+ 	 <tbody>
 		<%
 			ArrayList<Elemento>listaEle= (ArrayList<Elemento>)request.getAttribute("listaEle");
 			for(Elemento e : listaEle){
 		%>
 		<tr>
-			<td><%=e.getId() %></td>
 			<td><%=e.getNombre() %></td>
 			<td><%=e.getTipoElemento().getNombre() %></td>
 		</tr>
 		<%
 			}
 		%>
+	</tbody>
 		</table>
         <h2 class="form-ABMCElemento-heading">ABMC de Elementos</h2>
-        <label for="inputId" class="sr-only">ID</label>
-        <select name="id">
+        <div class="form-group">
+        	<label for="sel1">Elemento</label>
+        	<select class="form-control" name="id" id="sel1">
         	<%
         		for(Elemento e : listaEle){
         	%>
-        	<option value="<%=e.getId()%>"><%=e.getId()%></option>
+        	<option value="<%=e.getId()%>"><%=e.getNombre()+", "+e.getTipoElemento().getNombre()%></option>
         	<%
         		}
         	%>
-        </select><br>
-        <label for="inputNombre" class="sr-only">Nombre</label>
-        <input name="nombre" id="inputNombre" class="form-control" placeholder="Nombre" type=""><br>
-        <select name="tipo">
+        	</select></div><br>
+        <button class="btn btn-primary " onclick="javascript: submitForm('elementos/buscar')">Buscar</button>
+        <button class="btn btn-primary " onclick="javascript: submitForm('elementos/eliminar')">Eliminar</button><br><br>
+        <div class="form-group">
+        	<label for="inputNombre">Nombre de Elemento</label>
+        	<input type="text" name="nombre" id="inputNombre" class="form-control" placeholder="Nombre">
+        </div><br>
+        <div class="form-group">
+        	<label for="sel2">Tipo de Elemento</label>
+        	<select class="form-control" name="tipo" id="sel2">
         	<%
         		ArrayList<TipoElemento>listaTip=(ArrayList<TipoElemento>)request.getAttribute("listaTip");
         		for(TipoElemento t : listaTip){
@@ -81,11 +100,9 @@
         	<%
         		}
         	%>
-        </select>
-        <button class="btn btn-lg " onclick="javascript: submitForm('elementos/buscar')">Buscar</button>
-        <button class="btn btn-lg " onclick="javascript: submitForm('elementos/insertar')">Insertar</button>
-        <button class="btn btn-lg " onclick="javascript: submitForm('elementos/eliminar')">Eliminar</button>
-        <button class="btn btn-lg " onclick="javascript: submitForm('elementos/modificar')">Modificar</button>
+        	</select></div><br>
+        <button class="btn btn-primary " onclick="javascript: submitForm('elementos/insertar')">Insertar</button>
+        <button class="btn btn-primary " onclick="javascript: submitForm('elementos/modificar')">Modificar</button>
       </form>	
 </body>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

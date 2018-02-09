@@ -18,16 +18,17 @@
     </script>
 </head>
 <body>
-<h1>Bienvenido <%=((Persona)session.getAttribute("user")).getNombre() %></h1>
 <%
 	if(request.getAttribute("accion").equals("buscar"))
 	{
 %>
-<h2>Tipo de Elemento encontrado</h2><br>
+<h3>Tipo de Elemento encontrado</h3><br>
 <form class="form-Buscar" action="">
 	<label>ID: <%=((TipoElemento)request.getAttribute("tipoElemento")).getId()%></label><br>
 	<label>Nombre: <%=((TipoElemento)request.getAttribute("tipoElemento")).getNombre()%></label><br>
 	<label>Cantidad Máxima: <%=((TipoElemento)request.getAttribute("tipoElemento")).getCantMax() %></label><br>
+	<label>Tiempo Máximo de Reserva [hs]: <%=((TipoElemento)request.getAttribute("tipoElemento")).getMaxTiempo() %></label><br>
+	<label>Máxima Anticipación de Reserva [Días]: <%=((TipoElemento)request.getAttribute("tipoElemento")).getDiasAntMax() %></label><br>
 	<label>Encargado: <%=((TipoElemento)request.getAttribute("tipoElemento")).isEncargado()%></label><br>
 </form>
 <%
@@ -35,24 +36,24 @@
 	else if(request.getAttribute("accion").equals("insertar"))
 	{
 %>
-	Tipo de Elemento Agregado con éxito.
+	<h3>ipo de Elemento Agregado con éxito.</h3>
 <%
 	}
 	else if(request.getAttribute("accion").equals("eliminar"))
 	{
 %>
-	Tipo de Elemento Eliminado con éxito.
+	<h3>Tipo de Elemento Eliminado con éxito.</h3>
 <%
 	}
 	else
 	{
 %>
-	Tipo de Elemento Modificado con éxito.
+	<h3>Tipo de Elemento Modificado con éxito.</h3>
 <%
 	}
 %>
 	<form class="form-Accion" id="myForm" name="myForm" action="start" method="post">
-		<button class="btn btn-lg" onclick="javascript: submitForm()">Aceptar</button>
+		<button class="btn btn-primary" onclick="javascript: submitForm()">Aceptar</button>
 	</form>
 </body>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

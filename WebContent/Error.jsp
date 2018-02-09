@@ -18,7 +18,7 @@
 <body>
 	<form class="form-Error" id="myForm" name="myForm" action="<%=(String)request.getAttribute("url")%>" method="post">
 		<h3><%=(String)request.getAttribute("error")%><br></h3>
-		<button class="btn btn-lg" onclick="javascript: submitForm()">Aceptar</button>
+		<button class="btn btn-primary" onclick="javascript: submitForm()">Aceptar</button>
 	</form> 
 </body>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

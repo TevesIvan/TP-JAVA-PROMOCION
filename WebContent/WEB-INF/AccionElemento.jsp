@@ -18,12 +18,11 @@
     </script>
 </head>
 <body>
-<h1>Bienvenido <%=((Persona)session.getAttribute("user")).getNombre() %></h1>
 <%
 	if(request.getAttribute("accion").equals("buscar"))
 	{
 %>
-<h2>Elemento encontrado</h2><br>
+<h3>Elemento encontrado</h3><br>
 <form class="form-Buscar" action="">
 	<label>ID: <%=((Elemento)request.getAttribute("elemento")).getId()%></label><br>
 	<label>Nombre: <%=((Elemento)request.getAttribute("elemento")).getNombre()%></label><br>
@@ -34,24 +33,24 @@
 	else if(request.getAttribute("accion").equals("insertar"))
 	{
 %>
-	Elemento Agregado con éxito.
+	<h3>Elemento Agregado con éxito.</h3>
 <%
 	}
 	else if(request.getAttribute("accion").equals("eliminar"))
 	{
 %>
-	Elemento Eliminado con éxito.
+	<h3>Elemento Eliminado con éxito.</h3>
 <%
 	}
 	else
 	{
 %>
-	Elemento Modificado con éxito.
+	<h3>Elemento Modificado con éxito.</h3>
 <%
 	}
 %>
 	<form class="form-Accion" id="myForm" name="myForm" action="start" method="post">
-		<button class="btn btn-lg" onclick="javascript: submitForm()">Aceptar</button>
+		<button class="btn btn-primary" onclick="javascript: submitForm()">Aceptar</button>
 	</form>
 </body>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
