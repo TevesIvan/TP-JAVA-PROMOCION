@@ -119,7 +119,7 @@
         
         <h2 class="form-ABMCPersona-heading">Cancelar Reserva</h2>
         <div class="form-group">
-        	<label for="res">ID</label>
+        	<label for="res">Elemento</label>
         	<select class="form-control" name="id" id="res">
         	<%
         		for(Reserva r : listaRes){

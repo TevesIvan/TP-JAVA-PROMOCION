@@ -55,7 +55,7 @@ CREATE TABLE `elemento` (
   PRIMARY KEY (`idElemento`),
   KEY `fk_idTipoElemento_idx` (`idTipoElemento`),
   CONSTRAINT `fk_idTipoElemento` FOREIGN KEY (`idTipoElemento`) REFERENCES `tipo_elemento` (`idTipoElemento`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +64,7 @@ CREATE TABLE `elemento` (
 
 LOCK TABLES `elemento` WRITE;
 /*!40000 ALTER TABLE `elemento` DISABLE KEYS */;
-INSERT INTO `elemento` VALUES (1,'Proyector 1',1),(2,'Proyector 2',1),(3,'',2);
+INSERT INTO `elemento` VALUES (1,'Proyector 1',1),(2,'Proyector 23',1),(3,'Cochera Grande',2),(4,'Proyector 26',1),(5,'Notebook 42',3);
 /*!40000 ALTER TABLE `elemento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +87,7 @@ CREATE TABLE `persona` (
   PRIMARY KEY (`id`,`dni`),
   KEY `fk_idCategoria_idx` (`idCategoria`),
   CONSTRAINT `fk_idCategoria` FOREIGN KEY (`idCategoria`) REFERENCES `categoria` (`idCategoria`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +96,7 @@ CREATE TABLE `persona` (
 
 LOCK TABLES `persona` WRITE;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (1,'Ivan','Teves','39502883','','ivtev','123qwe',2),(3,'Juan','Rodriguez','12345678','\0','juan','123456',1),(6,'Martin','Martinez','87654321','','tincho','qweasd',3);
+INSERT INTO `persona` VALUES (1,'Ivan','Teves','39502883','','ivtev','123qwe',2),(3,'Juan','Rodriguez','12345678','','juan','123456',1),(7,'Martin','Martinez','87654321','','ele','asdf',3),(8,'Mr.','Satan','666','','AST','qweasd',1);
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +121,7 @@ CREATE TABLE `reserva` (
   KEY `fk_idElemento_idx` (`idElemento`),
   CONSTRAINT `fk_idElemento` FOREIGN KEY (`idElemento`) REFERENCES `elemento` (`idElemento`) ON UPDATE CASCADE,
   CONSTRAINT `fk_idPersona` FOREIGN KEY (`idPersona`) REFERENCES `persona` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +130,7 @@ CREATE TABLE `reserva` (
 
 LOCK TABLES `reserva` WRITE;
 /*!40000 ALTER TABLE `reserva` DISABLE KEYS */;
-INSERT INTO `reserva` VALUES (1,1,2,'Importante','Reservado','2017-01-01 00:00:00','2017-09-07 00:00:00','2017-09-10 00:00:00'),(2,3,1,'Urgente','Reservado','2017-02-02 00:00:00','2017-06-01 00:00:00','2017-06-04 00:00:00'),(7,1,2,'Que ande bien','Reservado','2017-09-07 00:00:00','2017-06-02 00:00:00','2017-06-05 00:00:00'),(13,1,1,'Que tenga HDMI','Cancelado','2017-11-24 00:00:00','2040-01-01 00:00:00','2040-01-04 00:00:00'),(14,1,1,' ','Cancelado','2017-11-24 15:25:12','2040-01-01 14:00:00','2040-01-04 15:00:00');
+INSERT INTO `reserva` VALUES (1,1,2,'Importante','Reservado','2017-01-01 00:00:00','2017-09-07 00:00:00','2017-09-10 00:00:00'),(2,3,1,'Urgente','Reservado','2017-02-02 00:00:00','2017-06-01 00:00:00','2017-06-04 00:00:00'),(7,1,2,'Que ande bien','Reservado','2017-09-07 00:00:00','2017-06-02 00:00:00','2017-06-05 00:00:00'),(13,1,1,'Que tenga HDMI','Cancelado','2017-11-24 00:00:00','2040-01-01 00:00:00','2040-01-04 00:00:00'),(14,1,1,' ','Cancelado','2017-11-24 15:25:12','2040-01-01 14:00:00','2040-01-04 15:00:00'),(15,3,3,'Que entre una Camioneta','Reservado','2018-02-01 16:47:19','2018-02-27 14:00:00','2018-03-01 15:00:00'),(16,3,2,'Que sea HD','Cancelado','2018-02-04 18:24:39','2090-01-01 14:00:00','2091-02-02 15:00:00'),(17,1,2,'','Cancelado','2018-02-09 17:58:59','2018-02-10 14:00:00','2018-02-11 14:00:00');
 /*!40000 ALTER TABLE `reserva` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,6 +145,9 @@ CREATE TABLE `tipo_elemento` (
   `idTipoElemento` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) DEFAULT NULL,
   `cantMax` int(11) DEFAULT NULL,
+  `encargado` bit(1) DEFAULT NULL,
+  `maxTiempo` int(11) DEFAULT NULL,
+  `diasAntMax` int(11) DEFAULT NULL,
   PRIMARY KEY (`idTipoElemento`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -155,7 +158,7 @@ CREATE TABLE `tipo_elemento` (
 
 LOCK TABLES `tipo_elemento` WRITE;
 /*!40000 ALTER TABLE `tipo_elemento` DISABLE KEYS */;
-INSERT INTO `tipo_elemento` VALUES (1,'Proyector',30),(2,'Cochera',10),(3,'Notebook',20);
+INSERT INTO `tipo_elemento` VALUES (1,'Proyector',10,'\0',24,2),(2,'Cochera',15,'\0',150,30),(3,'Notebook',20,'',200,10);
 /*!40000 ALTER TABLE `tipo_elemento` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -168,4 +171,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-05 21:35:49
+-- Dump completed on 2018-02-11 19:04:13
